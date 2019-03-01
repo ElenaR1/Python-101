@@ -1,3 +1,6 @@
+# LIST COMPREHENSION https://www.pythonforbeginners.com/basics/list-comprehensions-in-python
+
+
 from functions import sum_3,a,A
 print(sum_3(1,2,3))
 
