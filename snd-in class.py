@@ -67,3 +67,24 @@ def fact_digits(n):
     return sum([fact(digit) for digit in to_digits(n)])
 
 print(fact_digits(145))
+
+
+
+def reverse_string(string):
+    result = ''
+    n = len(string)
+
+    for i in range(n):
+        result += string[n - i - 1]
+
+    return result
+
+def palindrome(obj):
+    string_repr_of_obj = str(obj)
+    return string_repr_of_obj == reverse_str(string_repr_of_obj)
+
+def char_histogram(string):
+    out = {}
+    for c in string:
+        out[c] = out.get(c, 0) + 1
+    return out
