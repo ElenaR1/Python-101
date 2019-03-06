@@ -1,4 +1,4 @@
-#HOW TO WORK WITH ARGUMENTS. WHAT WE WRITE IN THE CONSOLE:  python snd.py one two three
+#HOW TO WORK WITH ARGUMENTS. WHAT WE WRITE IN THE CONSOLE:  python snd.py one two three snd.py is the 0 arg one the first two-2nd and 3-third
 
 import sys
 
