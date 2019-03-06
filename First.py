@@ -17,8 +17,8 @@ def printt(x,y):
 
 if __name__ == '__main__':
     # Map command line arguments to function arguments.
-    printt(*sys.argv[2:])# if there are 3 args otherwise ->error
-
+    print(*sys.argv[2:])# if there are 3 args it prints two three otherwise ->error
+    print(*sys.argv[1:])# if there are 3 args it prints one two three
 
 # Let's run this with three arguments:
 
