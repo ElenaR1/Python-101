@@ -303,3 +303,150 @@ def prime_factorization(n):
 
 
 print(prime_factorization(80))
+
+
+
+
+#The group function
+print('The group function')
+def group(lst):
+    n=len(lst)
+    newl=[]
+    if lst==[]:
+        return []
+    else:
+        for i in range(n):
+            if i == 0:
+                sub_arr=[]
+                sub_arr.append(lst[i])
+                newl.append(sub_arr)
+            elif i != 0 and i != n-1 :
+                if lst[i]==lst[i-1]:
+                    newl[-1].append(lst[i])
+                if lst[i] != lst[i-1]:
+                    sub_arr=[]
+                    sub_arr.append(lst[i])
+                    newl.append(sub_arr)
+            elif i==n-1:
+                if lst[i]==lst[i-1]:
+                    newl[-1].append(lst[i])
+                if lst[i] != lst[i-1]:
+                    sub_arr=[]
+                    sub_arr.append(lst[i])
+                    newl.append(sub_arr)
+    return newl
+
+print(group([1, 1, 1, 2, 3, 1, 1]))
+print(group([1, 2, 1, 2, 3, 3]))
+print(group([1, 2, 1, 2, 2, 2,2,4,4]))
+
+#Longest subsequence of equal consecutive elements
+print('Longest subsequence of equal consecutive elements')
+def max_consecutive(items):
+    lst=group(items)
+    count_lst=[]
+    for el in lst:
+        n=len(el)
+        count_lst.append(n)
+    return max(count_lst)
+
+print(max_consecutive([1, 1, 1, 2, 3, 1, 1]))
+print(max_consecutive([1, 2, 3, 3, 3, 3, 4, 3, 3]))
+print(max_consecutive([1, 1, 2, 2, 3, 3, 4, 4, 5, 5, 5]))
+
+
+#Word counter
+print('Word counter')
+
+def transpose(matrix):
+    transposed_matrix = [[matrix[j][i] for j in range(len(matrix))] for i in range(len(matrix[0]))]
+    return transposed_matrix
+
+def contains(word,row):
+    count=0
+    s=''.join(row)
+    #print(s)
+    count+= s.count(word)
+    reversed_word=word[::-1]
+    count+= s.count(reversed_word)
+    return count
+
+def get_diagonal(mat, bltr = True):
+      dim = len(mat)
+      #assert dim == len(mat[0])
+      lst = [[] for total in range(2 * len(mat) - 1)] 
+      print('lst',lst)
+      for row in range(len(mat)):
+        for col in range(len(mat[row])):
+          if bltr: 
+            # print(lst[row + col],mat[row][col])
+            lst[row + col].append(mat[col][row])
+            # print(lst[row + col])
+          else:    lst[col - row + (dim - 1)].append(mat[row][col])
+      return lst
+
+def check_diagonals(word,rows,cols,matrix):
+    print('in check_diagonals')
+    reversed_word=word[::-1]
+    left_to_right=get_diagonal(matrix,True)
+    right_to_left=get_diagonal(matrix,False)
+    count=0
+    for el in left_to_right:
+        str_el=''.join(el)
+        #print(str_el)
+        if word in str_el:
+            count+=str_el.count(word)
+        if reversed_word in str_el:
+            count+=str_el.count(reversed_word)
+      
+    for el in right_to_left:
+        #print(str_el)
+        str_el=''.join(el)
+        if word in str_el:
+            count+=str_el.count(word)
+        if reversed_word in str_el:
+            count+=str_el.count(reversed_word)
+    return count
+
+
+def check_rows(word,rows,cols,matrix):
+    print('in check_rows')
+    count=0
+    for i in range(rows):
+        count+=contains(word,matrix[i])
+    return count
+
+def check_cols(word,rows,cols,matrix):
+    print('in check_cols')
+    transposed_matrix=transpose(matrix)
+    #print('transposed_matrix',transposed_matrix)
+    count=0
+    for i in range(cols):
+        count+=contains(word,transposed_matrix[i])
+    return count 
+
+
+def word_counter(word,rows,cols,mat):
+    n=len(word)
+    if n>rows or n > cols:
+        msg="not a valid input"
+        return msg
+    count=0
+    count=check_rows(word,rows,cols,mat)+check_cols(word,rows,cols,mat)+check_diagonals(word,rows,cols,mat)
+    print('rows and cols and diagonals',check_rows(word,rows,cols,mat),check_cols(word,rows,cols,mat),check_diagonals(word,rows,cols,mat))
+    return count
+
+
+mat=[['i','v','a','n'],['i','p','o','a'],['t','v','a','v'],['k','o','a','i']]
+print(get_diagonal(mat,True))
+print(get_diagonal(mat,False))
+print(word_counter('iva',4,4,mat))
+print('=====================')
+mat2=[['i','v','a','n'],
+      ['e','v','n','h'],
+      ['i','n','a','v'],
+      ['m','v','v','n'],
+      ['q','r','i','t']]
+print(word_counter('ivan',5,4,mat2))
+
+
