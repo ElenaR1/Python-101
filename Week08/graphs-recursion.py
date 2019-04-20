@@ -1,3 +1,20 @@
+
+def deep_find(data, key):
+   for k,v in data.items():
+        if k==key:
+            found_key=True
+            return v
+        elif isinstance(v,dict):
+            if deep_find(v,key)!= None:
+                        found_key=True
+                        return deep_find(v,key)
+        elif isinstance(v, Iterable) and isinstance(v,dict)==False:
+            for el in v:
+                if isinstance(el,dict):
+                    if deep_find(el,key)!= None:
+                        found_key=True
+                        return deep_find(el,key)
+
 find_el=False
 def deep_find_bfs(data, key):
    found=[]
