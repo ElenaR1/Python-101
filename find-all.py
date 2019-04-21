@@ -66,3 +66,33 @@ def deep_find_all2(data, key):
                                 found_key=True
                                 val= deep_find_all2(element,key)
                                 yield val
+
+                              
+def deep_apply(func, data):
+    new_dict=dict()
+    for k,v in data.items():
+        #print('k:',k,"v:",v)
+        # if k==key:
+        #     data[k]=val
+        k=func(k)
+        #print('k:',k,'v:',v)
+        if isinstance(v,int):
+            new_dict[k]=v
+        if isinstance(v,dict):
+            deep_apply(func,v)
+        elif isinstance(v, Iterable) and isinstance(v,dict)==False:
+            #el_to_copy
+            for el in v:
+                if isinstance(el,dict):               
+                    val=deep_apply(func,el)
+                    print('B val:',val)
+                    new_dict[k]=val
+                elif isinstance(el,Iterable) and isinstance(el,dict)==False:
+                    for element in el:
+                        if isinstance(element,dict):                       
+                            val=deep_apply(func,element)
+                            print('C val:',val)
+                            new_dict[k]=val
+        print('IN FOR new_dict:',new_dict)
+    print('OUT OF  FOR new_dict:',new_dict)
+    return new_dict                                                            
