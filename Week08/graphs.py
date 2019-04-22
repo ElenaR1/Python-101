@@ -8,8 +8,8 @@ def deep_find(data, key):
             return v
         elif isinstance(v,dict):
             if deep_find(v,key)!= None:
-                        found_key=True
-                        return deep_find(v,key)
+                found_key=True
+                return deep_find(v,key)
         elif isinstance(v, Iterable) and isinstance(v,dict)==False:
             for el in v:
                 #print('el:',el)
@@ -71,85 +71,28 @@ def deep_find_bfs(data, key):
                          visited.append(element)
 
 #Task 2
-
-found_values=[]
-def deep_find_all(data, key):  
-   for k,v in data.items():
-        print('k:',k,"v:",v)
-        if k==key:
-            print('!!! EQUAL !!!','k:',k,"v:",v)
-            found_key=True
-            return v
-        elif isinstance(v,dict):
-            print('FER')
-            if deep_find_all(v,key)!= None:
-                print('fergre')
-                print('A k:',k,"v:",v)
-                found_key=True
-    #             found_values.append(v)
-                val_to_add=deep_find_all(v,key)
-                print('A k:',k,"val_to_add:",val_to_add)
-                found_values.append(val_to_add)
-        elif isinstance(v, Iterable) and isinstance(v,dict)==False:
-            for el in v:
-                #print('el:',el)
-                if isinstance(el,dict):
-                    if deep_find_all(el,key)!= None and isinstance(deep_find_all(el,key))!=list:
-                        print('B k:',k,"v:",v)
-                        found_key=True
-                    #     found_values.append(el)
-                        val_to_add=deep_find_all(el,key)
-                        print('B k:',k,"val_to_add:",val_to_add)
-                        found_values.append(val_to_add)
-                elif isinstance(el,Iterable) and isinstance(el,dict)==False:
-                    for element in el:
-                        if isinstance(element,dict):
-                            print('C k:',k,"v:",v)
-                            if deep_find_all(element,key)!= None  and isinstance(deep_find_all(el,key))!=list:
-                                found_key=True
-                            #     found_values.append(element)
-                                val_to_add=deep_find_all(element,key)
-                                print('C k:',k,"val_to_add:",val_to_add)
-                                found_values.append(val_to_add)
-   print('data:',data,'found_values:',found_values)
-   #return found_values
-   arr_of_found_values=found_values
-   # for el in found_values:
-   #      arr_of_found_values.append(el)
-   # print('arr_of_found_values:',arr_of_found_values)
-   # return arr_of_found_values
-
-
-
-def deep_find_all2(data, key):  
+def deep_find_all_dfs(data, key):
+   found_values = []
    for k,v in data.items():
         #print('k:',k,"v:",v)
         if k==key:
-            found_key=True
-            yield v
+            found_values.append(v)
         elif isinstance(v,dict):
-            if deep_find_all2(v,key)!= None:
-                        found_key=True
-            #             found_values.append(v)
-                        val= deep_find_all2(v,key)
-                        yield val                       
+            if deep_find(v,key)!= None:
+                found_values+=deep_find_all_dfs(v,key)
         elif isinstance(v, Iterable) and isinstance(v,dict)==False:
             for el in v:
                 #print('el:',el)
                 if isinstance(el,dict):
-                    if deep_find_all2(el,key)!= None:
-                        found_key=True
-                    #     found_values.append(el)
-                        val= deep_find_all2(el,key)
-                        yield val
+                    if deep_find(el,key)!= None:
+                         found_values+=deep_find_all_dfs(el,key)
                 elif isinstance(el,Iterable) and isinstance(el,dict)==False:
                     for element in el:
                         if isinstance(element,dict):
-                            if deep_find_all2(element,key)!= None:
-                                found_key=True
-                                val= deep_find_all2(element,key)
-                                yield val
-
+                            if deep_find(element,key)!= None:
+                                 found_values+=deep_find_all_dfs(element,key)
+   #print(found_values)
+   return found_values
 
 #Task 3
 def deep_update(data, key, val):
@@ -173,61 +116,75 @@ def func(key):
     new_key=key+'s'
     return new_key
 
+#In Python 3, d.items() is a view into the dictionary, like d.iteritems() in Python 2. To do this in Python 3, 
+#instead use d.copy().items(). This will similarly allow us to iterate over a copy of the dictionary in order to
+#avoid modifying the data structure we are iterating over. If I use only data.items() there are problems-the loop starts all over again
+#because it has been modified
 def deep_apply(func, data):
-    new_dict=dict()
-    for k,v in data.items():
+   for k,v in data.copy().items():
         #print('k:',k,"v:",v)
-        # if k==key:
-        #     data[k]=val
-        k=func(k)
-        #print('k:',k,'v:',v)
-        if isinstance(v,int):
-            new_dict[k]=v
-        if isinstance(v,dict):
-            deep_apply(func,v)
-        elif isinstance(v, Iterable) and isinstance(v,dict)==False:
-            #el_to_copy
-            for el in v:
-                if isinstance(el,dict):               
-                    val=deep_apply(func,el)
-                    print('B val:',val)
-                    new_dict[k]=val
-                elif isinstance(el,Iterable) and isinstance(el,dict)==False:
-                    for element in el:
-                        if isinstance(element,dict):                       
-                            val=deep_apply(func,element)
-                            print('C val:',val)
-                            new_dict[k]=val
-        print('IN FOR new_dict:',new_dict)
-    print('OUT OF  FOR new_dict:',new_dict)
-    return new_dict
-
-
-def deep_app(func, data):
-   for k,v in data.items():
-        #print('k:',k,"v:",v)
+        #print('data1:',data)
         ks=func(k)
-        if isinstance(v,Iterable)==False:
+        if isinstance(v,Iterable)==False or isinstance(v,str)==True:
+            #print('A k:',k)
             data[ks]=data.pop(k)
+            #print('in A, data:',data)
         elif isinstance(v,dict):
-            # if deep_find(v,key)!= None:
-            #             found_key=True
-            deep_app(func, v)
+            #print('B k:',k)
+            d=deep_apply(func, v)
+            data[ks]=d
+            del data[k]
+            #print('in B, data:',data)
         elif isinstance(v, Iterable) and isinstance(v,dict)==False:
+            type_of_object=type(v)
+            new_v=type_of_object()
+            #print('C k:',k)
             for el in v:
                 #print('el:',el)
                 if isinstance(el,dict):
-                    # if deep_find(el,key)!= None:
-                    #     found_key=True
-                    deep_app(func, el)
+                    #print('CC k:',k)
+                    d=deep_apply(func, el)
+                    if isinstance(new_v,tuple):
+                        l=list(new_v)
+                        l.append(d)
+                        new_v=tuple(l)
+                    else:
+                        new_v.append(d)
+
                 elif isinstance(el,Iterable) and isinstance(el,dict)==False:
+                    type_of_object=type(v)
+                    new_v=type_of_object()
+                    #print('CCC k:',k)
                     for element in el:
                         if isinstance(element,dict):
-                            # if deep_find(element,key)!= None:
-                            #     found_key=True
-                            deep_app(func, element)
+                            d=deep_apply(func, element)
+                            if isinstance(new_v,tuple):
+                                l=list(new_v)
+                                l.append(d)
+                                new_v=tuple(l)
+                            else:
+                                new_v.append(d)
+                        else:
+                            if isinstance(new_v,tuple):
+                                l=list(new_v)
+                                l.append(element)
+                                new_v=tuple(l)
+                            else:
+                                new_v.append(element)
 
-   print(data)
+                else:
+                     if isinstance(new_v,tuple):
+                        l=list(new_v)
+                        l.append(el)
+                        new_v=tuple(l)
+                     else:
+                        new_v.append(el)
+            #print('new_v:',new_v,'v:',v)
+            data[ks]=new_v
+            del data[k]
+
+   #print('data2: ',data)
+   return data
 
 
 def main():
@@ -291,14 +248,11 @@ def main():
     print('C32_INNER in DFS')
     print(deep_find(data2,'C32_INNER'))
 
-    # print('===========ALL=============')
-    # print('C1')
-    # print(deep_find_all(data2,'C1'))
-    # print(len(data2))
-    # print('--')
-    # l=list(deep_find_all2(data2,'C1'))
-    # for el in l:
-    #     print(el)
+    print('===========ALL=============')
+    print('C1')
+    #print(dfs_deep_find_all(data2,'C1'))
+    print(deep_find_all_dfs(data2,'C1'))
+    
 
     print('===========Apply=============')
     d={'a':1,'b':2,'c':3}
@@ -314,10 +268,8 @@ def main():
           'E':('e',{'E1':8,'E2':{'E2_inner': 9},'X':55}),
           'F':6
           }
-    # print(data3)
-    # print(deep_apply(func,data3))
-    # print(data3)
-    deep_app(func,data3)
+    deep_apply(func,data3)
+    print(data3)
 
 
 
