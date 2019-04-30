@@ -1,5 +1,5 @@
 import unittest
-from graphs import deep_find, deep_find_bfs,deep_update,deep_find_all_dfs,deep_find_all_bfs,func,deep_apply
+from graphs import deep_find, deep_find_bfs,deep_update,deep_find_all_dfs,deep_find_all_bfs,func,deep_apply,make_flat_lst,schema_validator
 
 class GraphsTest(unittest.TestCase):
     data={'A':[1,{'X':[[1,2,3,{'B1':10000}],{'C1':100}]}],
@@ -29,6 +29,28 @@ class GraphsTest(unittest.TestCase):
           'E':('e',{'E1':8,'E2':{'E2_inner': 9},'X':55}),
           'F':6
           }
+    data_schema1 = {
+        'key1': 'val1',
+        'key2': 'val2',
+        'key3': {
+            'inner_key1': 'val1',
+            'inner_key2': 'val2'
+        }
+    }
+    data_schema2 = {
+        'key1': 'val1',
+        'key2': 'val2',
+        'key3': {
+            'inner_key1': 'val1',
+            'inner_key2': 'val2',
+            'inner_key5':{'inner_inner_key3':'val3','inner_inner_key4':'val4'},
+            'key6':'val6',
+            'key9':'val9'
+        },
+        'inner_key7':'val7',
+        'inner_key8':'val8',
+    }
+
     def test_DFS_deep_find_when_key_is_in_a_dict_inside_an_iterable(self):
         key_to_find='C1'
         expected_result=100
@@ -190,6 +212,108 @@ class GraphsTest(unittest.TestCase):
          'Cs': {'C1s': 4, 'Xs': 5}, 'Ds': [{'D3s': 66}, {'D4s': 77}], 'Es': ('e', {'E1s': 8, 'E2s': {'E2_inners': 9}, 'Xs': 55}), 'Fs': 6}
         deep_apply(func,data3)
         self.assertEqual(data3, expected_result)
+
+    #Tests for Task6
+    def test_make_flat_lst(self):
+        schema = [
+            'key1',
+            'key2',
+            [
+                'key3',
+                ['inner_key1', 'inner_key2',['inner_inner_key3','inner_inner_key4'],'inner_key5'],
+                'key6',
+                ['inner_key7', 'inner_key8']
+            ],
+            'key9'
+        ]
+        expected_result=['key1', 'key2', 'key3', 'inner_key1', 'inner_key2', 'inner_inner_key3', 
+        'inner_inner_key4', 'inner_key5', 'key6', 'inner_key7', 'inner_key8', 'key9'] 
+        self.assertEqual(make_flat_lst(schema),expected_result)
+    def test_schema_validator_when_elements_in_schema_are_equal(self):
+        schema = [
+            'key1',
+            'key2',
+            [
+                'key3',
+                ['inner_key1', 'inner_key2']
+            ]
+        ]
+        expected_result=True 
+        self.assertEqual(schema_validator(schema,self.data_schema1),expected_result)
+    def test_schema_validator_with_a_more_complex_structurewhen_elements_in_schema_are_equal(self):
+        schema = [
+            'key1',
+            'key2',
+            [
+                'key3',
+                ['inner_key1', 'inner_key2',['inner_inner_key3','inner_inner_key4'],'inner_key5'],
+                'key6',
+                ['inner_key7', 'inner_key8']
+            ],
+            'key9'
+        ]
+        expected_result=True 
+        self.assertEqual(schema_validator(schema,self.data_schema2),expected_result)
+    def test_schema_validator_with_a_more_complex_structure_when_elements_in_schema_are_different(self):
+        schema = [
+            'key1',
+            'key2',
+            [
+                'key3',
+                ['inner_key1', 'inner_key2',['inner_inner_key3','inner_inner_key4'],'inner_key5'],
+                'key6',
+                ['inner_key77', 'inner_key8']
+            ],
+            'key9'
+        ]
+        expected_result=False 
+        self.assertEqual(schema_validator(schema,self.data_schema2),expected_result)
+    def test_schema_validator_when_there_are_fewer_elements_in_the_schema(self):
+        schema = [
+            'key1',
+            'key2',
+            [
+                'key3',
+                ['inner_key1', 'inner_key2',['inner_inner_key3','inner_inner_key4'],'inner_key5'],
+                'key6',
+                ['inner_key7', 'inner_key8']
+            ],
+        ]
+        expected_result=(False, 'Not equal number of elements') 
+        self.assertEqual(schema_validator(schema,self.data_schema2),expected_result)
+    def test_schema_validator_when_there_are_more_elements_in_the_schema(self):
+        schema = [
+            'key1',
+            'key2',
+            [
+                'key3',
+                ['inner_key1', 'inner_key2',['inner_inner_key3','inner_inner_key4'],'inner_key5'],
+                'key6',
+                ['inner_key7', 'inner_key8','inner_key10']
+            ],
+            'key9'
+        ]
+        expected_result=(False, 'Not equal number of elements') 
+        self.assertEqual(schema_validator(schema,self.data_schema2),expected_result)
+    def test_schema_validator_when_there_are_repeating_elements_in_the_data(self):
+        schema=['A','X',['B1',['C1']],
+                ['B'],
+                'C','C2',
+                ['D','D1','D2','D3','D4'],
+                'E','E1','E2','E2_inner',
+                ['F']]
+        expected_result=True
+        self.assertEqual(schema_validator(schema,self.data),expected_result)
+    def test_schema_validator_when_there_are_repeating_elements_in_the_schema(self):
+        schema=['A','X',['B1',['C1']],
+                ['B','B1'],
+                'C','C1','C2',
+                ['D','D1','D2','D3','D4'],
+                'E','E1','E2','E2_inner',
+                ['F']]
+        expected_result=True
+        self.assertEqual(schema_validator(schema,self.data),expected_result)
+
 
 
 
