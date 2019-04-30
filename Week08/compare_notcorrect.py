@@ -167,3 +167,30 @@ def deep_compare_bfs(data, data2):
    print('visited:',visited)
    print('visited2:',visited2)
    return visited==visited2
+
+
+ print('=======COMPARE========')
+    data4={
+            'A':{
+                'X':{'C1':1000}
+                },
+            'B':[2,3],
+            'C':{
+                'C1':2,
+                'C2':3,
+                'C3':{
+                    'C31':11,
+                    'C32':[{'C32_INNER':111}]
+                }            }
+    }
+    d1={'A':'aa','B':5,'C':{'C1':"cc"},'D':[1,2,{'D1':55}]}
+    d2={'A':'aa','B':5,'C':{'C1':'cc'},'D':[1,2,{'D1':55}]}
+    s1=[1,2,{'A':'aa'}]
+    s2=[1,2,{'A':'aa'}]
+    print(s1==s2)
+    print(d1==d2)
+    #print(deep_compare(d1,d2))
+    print(d1)
+    print(deep_compare_bfs(d1,d2))
+    print(deep_find_bfs(d1,'D1'))
+    #print(deep_compare(data2,data4))
