@@ -1,0 +1,2 @@
+INSERT INTO MOVIESTAR
+ VALUES ('Zahari Baharov', 'LA LA', 'M', '1978-19-01');
