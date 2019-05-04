@@ -1,0 +1,1 @@
+SELECT avg(speed) from pc;
