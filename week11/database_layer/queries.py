@@ -37,12 +37,15 @@ CREATE_RESERVED_SLOT= """
 UPDATE_SLOT="""UPDATE Slots
                         SET status='booked'
                         WHERE id_slot = ? """
+UPDATE_SLOT_CHANGE_HOUR="""UPDATE Slots
+                        SET start_hour=?, end_hour=?
+                        WHERE id_slot = ? """
 UPDATE_SLOT_NOT_BOOKED="""UPDATE Slots
                         SET status='not booked'
                         WHERE id_slot in (SELECT id_slot FROM ReservedSlots 
                                             WHERE id_reserved_slot = ?)
                         """
-
+DELETE_SLOT="""DELETE FROM Slots WHERE id_slot = ? """
 UPDATE_RESERVED_SLOT_CANCEL="""UPDATE ReservedSlots
                                 SET status='cancel'
                                 WHERE id_reserved_slot = ? """
@@ -52,9 +55,11 @@ SHOW_APPOINTMENTS_FOR_THIS_USER=""" SELECT id_reserved_slot, ReservedSlots.statu
                                     JOIN Slots on Slots.id_slot=ReservedSlots.id_slot
                                     JOIN Doctor on Doctor.id_doc=Slots.doctor_id
                                     WHERE patient_id=?"""
+SHOW_APPOINTMENTS_WITH_THIS_DOCTOR="""SELECT * FROM Slots WHERE doctor_id = ?; """
 UPDATE_RESERVED_SLOT_DONE="""UPDATE ReservedSlots
                                 SET status='done'
                                 WHERE id_reserved_slot = ? """
+DELETE_RESERVED_SLOT="""DELETE FROM ReservedSlots WHERE id_reserved_slot = ? """
 FIND_USER="""SELECT * FROM User WHERE password = ? and user_name = ?; """
 
 GET_ID_OF_USER="""SELECT id FROM User WHERE user_name = ?; """ 

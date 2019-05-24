@@ -31,8 +31,11 @@ class MainMenu:
             print('2-list all free slots for a specific date')
             print('3-list all booked slots')
             print('4-list all booked slots for a specific date')
-            print("5-add a slot")
-            print("3-delete a slot")
+            print("5-add an appointment")
+            print('6-show only your appointments')
+            print('7-update an appointment')
+            print("8-remove unbooked appointment")
+            print("type exit if you want to exit the menu")
             option=input()
             # method_name=cls.OPTION_MENU.get(option,cls.default_method)
             # method_name=getattr(cls,method_name)
@@ -61,6 +64,17 @@ class MainMenu:
                appointment_date=input('appointment_date: ')
                status=input('status: ')
                MainController.add_slot(current_user,start_hour,end_hour,appointment_date,status)
+            if option=='6':
+               slots=MainController.show_appointments_with_this_doctor(current_user)
+               cls.show_slots(slots)
+            if option=='7':
+               slot_id=input('id of appointment you want to update:')
+               start_hour=input('new start_hour: ')
+               end_hour=input('new end_hour: ')
+               MainController.update_slot(slot_id,start_hour,end_hour)
+            if option=='8':
+               slot_id=input('id of appointment you want to remove:')
+               MainController.delete_slot(slot_id)
             if option=='exit':
                 flag=False
     @classmethod
@@ -70,9 +84,11 @@ class MainMenu:
             print('1-list all free slots')
             print('2-list all free slots for a specific date')
             print("3-make an appointmment")
-            print("4-show appointments booked by this user")
+            print("4-show appointments booked by you")
             print("5-cancel an appointment")
             print("6-change the status of an appointment to 'done'")
+            print("7-delete a reserved slot'")
+            print("type exit if you want to exit the menu")
             option=input()
             if option=='1':       
                free_slots=MainController.list_all_free_slots()
@@ -89,10 +105,13 @@ class MainMenu:
                cls.show_appointments(slots)
             if option=='5':
                slot_id=input('id of appointment you want to cancel: ')
-               MainController.cancel_appointment(current_user,slot_id)
+               MainController.cancel_appointment(slot_id)
             if option=='6':
                slot_id=input('id of appointment you want to change: ')
                MainController.change_status_to_done(slot_id)
+            if option=='7':
+               slot_id=input('id of reserved_slot you want to delete: ')
+               MainController.delete_reserved_slot(slot_id)
             if option=='exit':
                 flag=False
 

@@ -59,14 +59,17 @@ class MainController:
     def list_booked_slots(cls,date_to_check):
         return User.list_booked_slots(date_to_check)
     @classmethod
-    def add_doctor(cls,title,id_user):
-        Doctor.create_new_doctor(title,id_user)
+    def add_doctor(cls,title,current_user):
+        Doctor.create_new_doctor(title,current_user)
     @classmethod
-    def add_patient(cls,address,age,unique_id,id_user):
-        Patient.create_new_patient(address,age,unique_id,id_user)
+    def add_patient(cls,address,age,unique_id,current_user):
+        Patient.create_new_patient(address,age,unique_id,current_user)
     @classmethod
     def add_slot(cls,current_user,start_hour,end_hour,appointment_date,status):
         Doctor.add_new_slot(current_user,start_hour,end_hour,appointment_date,status)
+    @classmethod
+    def delete_slot(cls,slot_id):
+        Doctor.delete_slot(slot_id)
     @classmethod
     def make_appointment(cls,current_user,slot_id):
         Patient.make_new_appointment(current_user,slot_id)
@@ -77,8 +80,17 @@ class MainController:
     def change_status_to_done(cls,slot_id):
         Patient.change_status_to_done(slot_id)
     @classmethod
+    def delete_reserved_slot(cls,slot_id):
+        Patient.delete_reserved_slot(slot_id)
+    @classmethod
     def show_appointments_for_this_user(cls,current_user):
         return Patient.show_appointments_for_this_user(current_user)
+    @classmethod
+    def show_appointments_with_this_doctor(cls,current_user):
+        return Doctor.show_appointments_with_this_doctor(current_user)
+    @classmethod
+    def update_slot(cls,slot_id,start_hour,end_hour):
+        return Doctor.update_slot(slot_id,start_hour,end_hour)
     @classmethod
     def show_members(cls,current_user):
         if current_user_is_doctor:

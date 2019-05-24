@@ -56,18 +56,16 @@ class StartMenu:
                 sys.exit(1)
             else:
                 #MainController.sign_in(username,password)
-                id_user=current_user.get_id()# put it in  database.py
+                #id_user=current_user.get_id()# put it in  database.py
                 if current_user.status=='d':
                     title=input('title-> ')
-                    MainController.add_doctor(title,id_user)
+                    MainController.add_doctor(title,current_user)
                     MainMenu.show_options_for_doctor(current_user)
                 elif current_user.status=='p':
                     address=input('address-> ')
                     age=input('age-> ')
                     unique_id=input('unique_id-> ')
-                    MainController.add_patient(address,age,unique_id,id_user)
+                    MainController.add_patient(address,age,unique_id,current_user)
                     MainMenu.show_options_for_patient(current_user)
-                
-
         else:
             sys.exit(1)
