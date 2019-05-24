@@ -16,9 +16,9 @@ class Patient:
             cls(username,password,result['status'])
 
     @classmethod
-    def create_new_patient(cls,address,age,unique_id,id_user):
+    def create_new_patient(cls,address,age,unique_id,current_user):
         try:
-            cls.db.create_patient(address,age,unique_id,id_user)
+            cls.db.create_patient(address,age,unique_id,current_user)
         except DatabaseConnectionError:
             sys.exit(1)
     @classmethod
@@ -37,6 +37,12 @@ class Patient:
     def change_status_to_done(cls,slot_id):
         try:
             cls.db.change_status_to_done(slot_id)
+        except DatabaseConnectionError:
+            sys.exit(1)
+    @classmethod
+    def delete_reserved_slot(cls,slot_id):
+        try:
+            cls.db.delete_reserved_slot(slot_id)
         except DatabaseConnectionError:
             sys.exit(1)
     @classmethod

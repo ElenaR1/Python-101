@@ -90,17 +90,24 @@ class Database():
         self.cursor.execute(CREATE_USER.format(user_name=user_name,password=password,status=status,full_name=full_name))
 
         self.connection.commit()
-    def create_doctor(self,title,id_user):      
+    def create_doctor(self,title,current_user):
+        id_user=self.get_id(current_user.username)      
         self.cursor.execute(CREATE_DOCTOR.format(title=title,id_user=id_user))
-
         self.connection.commit()
-    def create_patient(self,address,age,unique_id,id_user):
+    def create_patient(self,address,age,unique_id,current_user):
+        id_user=self.get_id(current_user.username)
         self.cursor.execute(CREATE_PATIENT.format(address=address,age=age,unique_id=unique_id,id_user=id_user))
         self.connection.commit()
     def add_slot(self,current_user,start_hour,end_hour,appointment_date,status):
         doctor_id=self.get_id_of_doctor(current_user)
         self.cursor.execute(CREATE_SLOT.format(start_hour=start_hour,end_hour=end_hour,appointment_date=appointment_date,
             status=status,doctor_id=doctor_id))
+        self.connection.commit()
+    def update_slot(self,slot_id,start_hour,end_hour):
+        self.cursor.execute(UPDATE_SLOT_CHANGE_HOUR,(start_hour,end_hour,slot_id))
+        self.connection.commit()
+    def delete_slot(self,slot_id):
+        self.cursor.execute(DELETE_SLOT,(slot_id,))
         self.connection.commit()
     def make_appointment(self,current_user,slot_id):
         patient_id=self.get_id_of_patient(current_user)
@@ -111,12 +118,21 @@ class Database():
         self.cursor.execute(UPDATE_SLOT_NOT_BOOKED,(slot_id,))
         self.cursor.execute(UPDATE_RESERVED_SLOT_CANCEL,(slot_id,))
         self.connection.commit()
+    def delete_reserved_slot(self,slot_id):
+        self.cursor.execute(DELETE_RESERVED_SLOT,(slot_id,))
+        self.connection.commit()
     def change_status_to_done(self,slot_id):
         self.cursor.execute(UPDATE_RESERVED_SLOT_DONE,(slot_id,))
         self.connection.commit()
     def show_appointments_for_this_user(self,current_user):
         patient_id=self.get_id_of_patient(current_user)
         self.cursor.execute(SHOW_APPOINTMENTS_FOR_THIS_USER,(patient_id,))
+        slots = self.cursor.fetchall()
+        self.connection.commit()
+        return slots
+    def show_appointments_with_this_doctor(self,current_user):
+        doctor_id=self.get_id_of_doctor(current_user)
+        self.cursor.execute(SHOW_APPOINTMENTS_WITH_THIS_DOCTOR,(doctor_id,))
         slots = self.cursor.fetchall()
         self.connection.commit()
         return slots
@@ -142,6 +158,7 @@ class Database():
          return slots
 
 # def main():
-#     pass
+#     db=Database()
+#     db.delete_reserved_slot(2)
 # if __name__=='__main__':
 #     main()
