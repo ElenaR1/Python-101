@@ -20,9 +20,7 @@ class Hero(Person):
     @property
     def name(self):
         return self.known_as()
-    
-
-
+   
     def attack(self, by=None):
         if self.current_spell == None and self.current_weapon == None:
             return (0, "{} knows no spells and has no weapons".format(self.name))
@@ -31,7 +29,7 @@ class Hero(Person):
         if by == None:
             if self.can_cast() and self.damage_of_spell() >= self.damage_of_weapon():
                 return self.attack(by='spell')
-            elif self.current_weapon != None:
+            elif isinstance(self.current_weapon, Weapon):
                 return self.attack(by='weapon')
             else:
                 return (0, "{} has no mana, and has no weapons".format(self.name))
@@ -40,5 +38,9 @@ class Hero(Person):
             return (self.current_weapon.damage, log_str.format(
                 self.name, self.current_weapon.name, self.current_weapon.damage))
         if by == "spell":
-            return (self.current_spell.damage, log_str.format(
+            if self.current_spell.mana_cost<=self._mana:
+                    self._mana=self._mana-self.current_spell.mana_cost
+                    return (self.current_spell.damage, log_str.format(
                 self.name, self.current_spell.name, self.current_spell.damage))
+            else:
+                raise CustomError("The hero cannot cast the spell because the mana is not enough")

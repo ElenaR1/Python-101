@@ -11,10 +11,12 @@ class Person:
         self._max_health = health
         self._max_mana = mana
 
-    def get_health(self):
+    @property
+    def health(self):
         return self._health
 
-    def get_mana(self):
+    @property
+    def mana(self):
         return self._mana
 
     def is_alive(self):
@@ -26,7 +28,7 @@ class Person:
     def can_cast(self):
         if self.current_spell == None:
             return False
-        return self._mana > self.current_spell.mana_cost
+        return self.mana > self.current_spell.mana_cost
 
     def take_damage(self, damage_points):
         if damage_points > self._health:
@@ -40,8 +42,8 @@ class Person:
         else:
             if healing_points + self._health > self._max_health:
                 self._health = self._max_health
-                #print('Health is max')
-                return True
+                s = "{}'s health is max and it cannot go beyond this value".format(self.__class__.__name__)
+                return (True,s)
             else:
                 self._health = self._health + healing_points
                 return True
@@ -52,8 +54,8 @@ class Person:
         else:
             if mana_points + self._mana > self._max_mana:
                 self._mana = self._max_mana
-                #print('Mana is max')
-                return True
+                s = "{}'s mana is max and it cannot go beyond this value".format(self.__class__.__name__)
+                return (True,s)
             else:
                 self._mana = self._mana + mana_points
                 return True
