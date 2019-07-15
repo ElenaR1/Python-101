@@ -28,6 +28,19 @@ def sum_numbers(filename):
     return global_sum+int(temp_str)
 
 
+#shorter
+def sum_numbers(filename):
+    with open(filename,"r") as f:
+        arr=f.readlines()
+    print(arr)
+    lst=arr[0].split(' ')
+    lst=lst[:len(lst)-1]
+    print(lst)
+    sum=0
+    for el in lst:
+        sum+=int(el)
+    return sum
+
 
 def main():
     print(sum_numbers(sys.argv[1]))
