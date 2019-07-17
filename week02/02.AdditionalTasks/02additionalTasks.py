@@ -90,6 +90,26 @@ def is_credit_card_valid(number):
     else:
         return False
 
+#2nd version
+def is_credit_card_valid2(number):
+    l=len(str(number))
+    str_num=str(number)
+    new_num=''
+    str_num=str_num[::-1]
+    for ind,el in enumerate(str_num):
+        if ind%2==0:
+            new_num+=el
+        else:
+            transformed_dig=int(el)*2
+            new_num+=str(transformed_dig)[::-1]
+    new_num=new_num[::-1]
+    sum=0
+    for el in new_num:
+        sum+=int(el)
+    if sum%10==0:
+        return True
+    else:
+        return False
 
 print('Credit card validation')
 print(is_credit_card_valid(14283))
