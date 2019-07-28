@@ -65,7 +65,19 @@ def filter(file_name,**kwargs):
             result_array[len(result_array):]=[[el[0],el[7]]]
         else:
             add_element=True
-
+    # if 'order_by' in kwargs.keys():
+    #     if kwargs['order_by']=='full_name':
+    #         result_array = sorted(result_array, key=lambda k: k[0])
+    #     if kwargs['order_by']=='favourite_color':
+    #         result_array = sorted(result_array, key=lambda k: k[1])
+    #     if kwargs['order_by']=='company_name':
+    #         result_array = sorted(result_array, key=lambda k: k[2])
+    #     if kwargs['order_by']=='email':
+    #         result_array = sorted(result_array, key=lambda k: k[3])
+    #     if kwargs['order_by']=='phone_number':
+    #         result_array = sorted(result_array, key=lambda k: k[4])
+    #     if kwargs['order_by']=='salary':
+    #         result_array = sorted(result_array, key=lambda k: k[5])
 
     l=len(result_array)
 
