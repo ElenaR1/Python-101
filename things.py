@@ -134,4 +134,38 @@ def is_credit_card_valid2(number):
         return True
     else:
         return False
+#WEEK 03
+def rpn_calculate(expr):
+    ops = {'+','-','*','/','SQRT'}
+    split_expr=expr.split(' ') 
+    if len(split_expr)==1:
+        return int(split_expr[0])
+    st=[]
+    num=int(split_expr[0])
+    st.append(num)
+    for tk in split_expr[1:]:
+      #print(st)
+      if tk in ops:
+        #print("if",tk)
+        if tk == '+':
+            y,x = st.pop(),st.pop()
+            z=x+y    
+        if tk == '-':
+            y,x = st.pop(),st.pop()
+            z=x-y   
+        if tk == '/':
+            y,x = st.pop(),st.pop()
+            z=x/y   
+        if tk == '*':
+            y,x = st.pop(),st.pop()
+            z=x*y
+        if tk == 'SQRT':
+            y=st.pop()
+            z=math.sqrt(y)
+      else:
+        #print("else",tk)
+        z = int(tk)
+      st.append(z)
+    return z
 
+#print(rpn_calculate("4 8 +"))
