@@ -81,7 +81,8 @@ def book_reader():
     f.close()
 
 def main():
-    
+    for val in chain(range(0, 4), range(4, 8)):
+        print(val)
     print(chain(range(0, 4), range(4, 8)))
     print(list(chain(range(0, 4), range(4, 8))))
     #chain2(range(0, 4), range(4, 8))
