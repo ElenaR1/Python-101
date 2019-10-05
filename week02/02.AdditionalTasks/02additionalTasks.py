@@ -117,6 +117,21 @@ print('79927398713',is_credit_card_valid(79927398713))
 print('79927398715',is_credit_card_valid(79927398715))# def f(a):
 
 
+#another way
+def is_credit_card_valid(number):
+    str_n=str(number)
+    n=len(str_n)
+    s=""
+    for i in reversed(range(n)):
+        if i%2==0:
+           s+=(str_n[i])
+        else:
+           s+=str(int(str_n[i])*2)
+    summ=0
+    for el in s:
+        summ+=int(el)
+    return summ%10==0
+
 #Goldbach Conjecture
 print('Goldbach Conjecture')
 def goldbach(n):
