@@ -141,6 +141,25 @@ def fact(n):
         result *= x + 1
 
     return result
+#or
+def fact(n):
+    if n in [0, 1]:
+        return 1
+
+    result = 1
+
+    for x in range(2,n+1):
+        result *= x 
+
+    return result
+
+#or recursive
+def fact(n):
+    if n in [0, 1]:
+        return 1
+
+    return n*fact(n-1)
+
 print(fact(4))
 
 def fact_digits(n):
