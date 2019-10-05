@@ -340,6 +340,23 @@ print(group([1, 1, 1, 2, 3, 1, 1]))
 print(group([1, 2, 1, 2, 3, 3]))
 print(group([1, 2, 1, 2, 2, 2,2,4,4]))
 
+#another way
+def group(lst):
+    sub_lst=[]
+    newl=[]
+    sub_lst+=[lst[0]]
+    for i in range(1,len(lst)):
+        #print('sub_lst outer: ',sub_lst,i,lst[i],lst[i]==sub_lst[-1])
+        if lst[i]==sub_lst[-1]:
+            sub_lst.append(lst[i])
+        else:
+            newl.append(sub_lst)
+            sub_lst=[]
+            sub_lst.append(lst[i])
+            #print('sub_lst: ',sub_lst)
+    newl.append(sub_lst)
+    return newl
+
 #Longest subsequence of equal consecutive elements
 print('Longest subsequence of equal consecutive elements')
 def max_consecutive(items):
