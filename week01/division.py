@@ -1,3 +1,35 @@
+# po-nadolu sa obqsneni
+import math
+
+def print_factors(x):
+    for i in range(1,x+1):
+        if x%i==0:
+            print(i)
+
+def prime(num):
+    if num>1:
+        for i in range(2,num):#for i in range(2, num//2):
+            if num%i==0:
+                return False
+        return True
+    else:
+        return False
+
+def primeFactors(n):
+    while n%2==0:
+        print(2)
+        n=n//2
+    for i in range(3,int(math.sqrt(n))+1):
+        while n%i==0:
+            print(i)
+            n=n//i
+    if n>2:
+        print(n)
+         
+ ##########################################################
+
+
+
 #Find Factors of Number
 # Python Program to find the factors of a number
 
