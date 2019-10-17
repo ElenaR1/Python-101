@@ -334,7 +334,26 @@ def prime_factorization(n):
 
 print(prime_factorization(80))
 
+#another way
+def prime(num):
+    if num>1:
+        for i in range(2,num):#for i in range(2, num//2):
+            if num%i==0:
+                return False
+        return True
+    else:
+        return False
 
+def prime_factorization(n):
+    l=[]
+    for i in range(2,n):
+        if n%i==0 and prime(i):
+            count=0
+            while n%i==0:
+                count+=1
+                n=n//i
+            l.append((i,count))
+    return l
 
 
 #The group function
