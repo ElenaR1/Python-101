@@ -6,7 +6,8 @@ def areParanthesisBalanced(expr):
         if expr[i]=='(' or expr[i]=='[' or expr[i]=='{':
             s.append(expr[i])
             continue
-        if(len(s)==0):
+        if len(s)==0: # pri tozi sluchai : expr = "{()}]";  
+            print('ccc')
             return False
         if expr[i]==')':
             x=s.pop()
@@ -22,7 +23,8 @@ def areParanthesisBalanced(expr):
                 return False
     if len(s)==0:
         return True
-    else:
+    else:#pri tozi sluchai expr = "{()}[";  
+        print('ddd')
         return False
 
 
