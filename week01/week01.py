@@ -253,6 +253,17 @@ def char_histogram(string):
 #print(char_histogram("Python!"))
 print('Histogram: ',char_histogram("AAAAaaabb!!!"))
 
+#another way
+def char_histogram(string):
+    d=dict()
+    for el in string:
+        if el not in d.keys():
+            d[el]=1
+        else:
+            val=d[el]
+            d[el]=val+1
+    return d
+
 
 #Sum Numbers in Matrix
 def sum_matrix(m):
