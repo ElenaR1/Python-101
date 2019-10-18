@@ -27,6 +27,21 @@ def sum_of_numbers(input_string):
     return sum
 
 
+#another way
+def sum_of_numbers(input_string):
+    temp=''
+    s=0
+    for ch in input_string:
+        if ch.isdigit():
+            temp+=ch
+        else:
+            if temp.isdigit():
+                s+=int(temp)
+                temp=''
+    if temp.isdigit():
+        s+=int(temp)
+    return s
+
 
 
 def main():
