@@ -21,6 +21,24 @@ def is_number_balanced(number):
             sum2+=int(num[i])
         return sum1==sum2
 
+    #another way
+def is_number_balanced(number):
+    num=str(number)
+    n=len(num)
+    mid=n//2
+    l=0
+    r=n-1
+    sl=0
+    sr=0
+    while l<r:
+        sl+=int(num[l])
+        sr+=int(num[r])
+        l+=1
+        r-=1
+    return sl==sr
+
+    
+    
 
 
 def main():
