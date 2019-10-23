@@ -1,7 +1,7 @@
 import datetime
 from collections import defaultdict
 from itertools import combinations
-#import pandas as pd
+
 def remove_newline(str):
     n=len(str)
     str=str[:n-1]
